@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,43 +7,94 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <EditText
+            android:id="@+id/editText_Input_Name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/buttonSave_Contact"
+            tools:layout_constraintTop_creator="1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/buttonSave_Contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="Save"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editText_Input_Num"
+            app:layout_constraintLeft_toRightOf="@+id/editText_Input_Name"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_constraintTop_creator="1" />
+
+        <EditText
+            android:id="@+id/editText_Input_Num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:inputType="textPersonName|phone"
+            android:text="Phone Number"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/buttonSave_Contact"
+            app:layout_constraintTop_toBottomOf="@+id/editText_Input_Name"
+            tools:layout_constraintTop_creator="1" />
+
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="11dp"
-            android:text="TextView" />
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_alignTop="@+id/textView4"
-            android:layout_toEndOf="@+id/textView4" />
+            android:layout_marginLeft="16dp"
+            android:text="Emergency Contacts:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/editText_Input_Num" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textView_Saved_Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/seekBar"
-            android:layout_marginTop="11dp"
-            android:layout_toStartOf="@+id/seekBar"
-            android:text="TextView" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <Switch
-            android:id="@+id/switch2"
+        <TextView
+            android:id="@+id/textView_Saved_Num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/seekBar"
-            android:layout_alignTop="@+id/textView5"
-            android:text="Switch" />
-    </RelativeLayout>
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Saved_Name" />
+
+        <Button
+            android:id="@+id/buttonDelete_Contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="Delete"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="@+id/textView_Saved_Name"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_Saved_Num"
+            android:layout_marginBottom="16dp" />
+
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>
