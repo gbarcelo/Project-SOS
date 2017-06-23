@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_tracking:
-                    SharedPreferences shf = getSharedPreferences("KEY_VALUE_WATCHMAN", MODE_PRIVATE);
-                    String str = ""+shf.getInt("contactLength",0);
-                    MessageBox(str);
+//                    SharedPreferences shf = getSharedPreferences("KEY_VALUE_WATCHMAN", MODE_PRIVATE); //debug
+//                    String str = ""+shf.getInt("contactLength",0);
+//                    MessageBox(str);
                     fragment = new fragMain();
                     fm = getSupportFragmentManager();
                     ft = fm.beginTransaction();
@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
     }// end OnCreate
 
     public String getPhonNum(int id){
-        return arrayPHone.get(id).toString();
+        if (arrayPHone.size()>id)
+            return arrayPHone.get(id).toString();
+        return "";
     }
 
     public void setPhonNum(String str){
