@@ -49,7 +49,7 @@ public class fragSettings extends android.support.v4.app.Fragment {
                 try {
 
                     int cntctAmt = ((MainActivity)getActivity()).getContactAmt();
-                    if (cntctAmt<2) {
+                    if (cntctAmt<3) {
                         ((MainActivity) getActivity()).setPhonNum(edTxt_Input_Num.getText().toString()); //phonNum = edTxt_Input_Num.getText().toString();
                         ((MainActivity) getActivity()).setContactName(edTxt_Input_Name.getText().toString()); //contName = edTxt_Input_Name.getText().toString();
                     }
