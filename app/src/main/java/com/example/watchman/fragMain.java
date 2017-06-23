@@ -3,7 +3,9 @@ package com.example.watchman;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -11,8 +13,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 //import android.app.Fragment;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -32,6 +37,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.R.attr.delay;
 import static com.example.watchman.R.id.buttonMain;
 import static com.example.watchman.R.id.textView_Saved_Name1;
 import static com.example.watchman.R.id.textView_Saved_Num1;
@@ -70,18 +76,30 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        MessageBox(((MainActivity) getActivity()).ListAllCNums());    //debugging MsgBox
-        //
+
         chckPermission();
+
+        myLocationSOS();
+
+
+
+//        MessageBox(((MainActivity) getActivity()).ListAllCNums());    //debugging MsgBox
+        //
+
+
+
 // ======== WORKING
 
 
         View rootView = inflater.inflate(R.layout.fragment_frag_main, container, false);
+
         final View rootViewSettings = inflater.inflate(R.layout.fragment_frag_settings, container, false);
 
         //============================ DONT DELETE ============================
         // this button is the medical button
         button = (Button) rootView.findViewById(R.id.buttonMain);    // button
+
+
 
         // sndBtn Save button
         // dsblButton  // need save button
@@ -99,17 +117,101 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
 
 
 
-
-
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                // count how many text has been sent and after 2 sent. After 2 message sent, no
+                // longer need button.
 
 
+                if (count < MAX_NUMBER__SMS_SENT) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        // increaseSize();
+
+                        //postCenterToast("***** HOLDING BUTTON ****** .");
+
+                    } else {//start else = = = = = = = = = = = = !!!!!!!
+
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        //Yes button clicked, do nothing
+
+                                        break;
+
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        //No button clicked
+
+                                        try {
+                                            //*****    NOTE:  THIS IS TO SEND SMS, future tech    **************
+
+                                            //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
+
+                                            smsMgrTwo = SmsManager.getDefault();
 
 
+                                            //   }
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
+
+                                                // http://maps.google.com/maps?q=24.197611,120.780512 show PIC DROP
+
+                                                // adding all coordinates and message to be sent as dataOfCoordNameConvertor
+
+                                                String testMsg = "Help! Please check in on me! Here's my last known location:";
+
+                                                dataOfCoordNameConvertor =  testMsg + "  " + "http://www.google.com/maps?q="+dataOfCoordNameConvertor;
+
+                                                final String phonNum0 = ((MainActivity)getActivity()).getPhonNum(0);
+                                                final String phonNum1 = ((MainActivity)getActivity()).getPhonNum(1);
+                                                final String phonNum2 = ((MainActivity)getActivity()).getPhonNum(2);
 
 
+                                                String number = "5554";
+                                                if (phonNum0.length() > 3)
+                                                    smsMgrTwo.sendTextMessage(phonNum0, null, dataOfCoordNameConvertor, null, null);
+
+
+                                                //count++;  // count how many sms sent. . MAX 1
+
+
+                                                Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        //Do something after after 1000 seconds
+                                                        if (phonNum1.length() > 3)
+                                                            smsMgrTwo.sendTextMessage(phonNum1, null, dataOfCoordNameConvertor, null, null);
+                                                    }
+                                                }, 1000);  // 1 seconds
+
+                                                Handler handler2 = new Handler();
+                                                handler2.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run(){
+                                                        //Do something after after 1000 seconds
+                                                        if (phonNum2.length() > 3)
+                                                            smsMgrTwo.sendTextMessage(phonNum2, null, dataOfCoordNameConvertor, null, null);
+                                                    }
+                                                }, 1000);  // 1 seconds
+
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                }
+                            }
+                        };
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Are you okay?").setPositiveButton("Yes", dialogClickListener)
+                                .setNegativeButton("No", dialogClickListener).show();
+
+                    } //============================================= END ELSE ===!!!!!
+
+                }// end 1st if statement ---> counting message sent
 
                 return false;
             }
@@ -172,10 +274,10 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
             longCoor = location.getLongitude();
             lattCoor = location.getLatitude();
 
-//            if (location != null)
-//                onLocationChanged(location);
-//            else
-//                Toast.makeText(getBaseContext(), "Location not Found.", Toast.LENGTH_SHORT).show();
+            if (location != null)
+                onLocationChanged(location);
+            else
+               Toast.makeText(getActivity(), "Location not Found.", Toast.LENGTH_SHORT).show();
         }
 
     } // end of implement GPS
