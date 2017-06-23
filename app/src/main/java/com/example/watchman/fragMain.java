@@ -38,26 +38,6 @@ import static com.example.watchman.R.id.textView_Saved_Num1;
 
 public class fragMain extends android.support.v4.app.Fragment implements LocationListener {
 
-    final int MAX_NUMBER__SMS_SENT = 2;
-
-    TextView textView;
-    EditText editTextPhone;
-    EditText editTextMessage;
-    Button button;
-
-    private String phonNum, msg;  // SMS, holds data
-    SmsManager smsMgrTwo = null;  // SMS, used to pass data
-    int count = 0;                // SMS, keeps track of message sent button and number putton pused.
-
-    LocationManager locationManager;  // GPS
-    String mapProvider;               // GPS
-
-    Double longCoor = 0.0;            // GPS  -long  use to pass
-    Double lattCoor = 0.0;            // Gps   Lat use to pass
-
-    String dataOfCoordNameConvertor;  // data of coordinate and name to send via SMS
-
-
 
 
     final int MAX_NUMBER__SMS_SENT = 2;
@@ -94,10 +74,6 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
         //
         chckPermission();
 // ======== WORKING
-
-
-        //
-        chckPermission();
 
 
         View rootView = inflater.inflate(R.layout.fragment_frag_main, container, false);
@@ -172,47 +148,18 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
 
 
 
-}// end
-
-
-
-
-    // GPS / SMS enables. .
-    public void chckPermission() {
-
-        //check permission if it is off, then it will prompt user to enable permission.
-        // Checks Location and SMS permission at the same time.
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) +
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-
-            // Allow access to GPS Location, location = 0b111,
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS}, 123);
-
-//            Log.d("This App", "Permission is not granted, requesting");  // SMS = 123.  123 for this High Tech
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 123);
-//            //  button.setEnabled(false);
-        }
-        else {
-            Log.d("This App", "Permission is granted");
-            // postCenterToast("Permission to send SMS");.
-        }
-    }
-
-
-
-
 //=============== GPS ============================
 
     //  1 of 2:implement GPS
     public void myLocationSOS() {
 
-        locationManager = (LocationManager) getChildFragmentManager().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
 
         mapProvider = locationManager.getBestProvider(criteria, false);
 
         if (mapProvider != null && !mapProvider.equals("")) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             Location location = locationManager.getLastKnownLocation(mapProvider);
@@ -225,10 +172,10 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
             longCoor = location.getLongitude();
             lattCoor = location.getLatitude();
 
-            if (location != null)
-                onLocationChanged(location);
-            else
-                Toast.makeText(getBaseContext(), "Location not Found.", Toast.LENGTH_SHORT).show();
+//            if (location != null)
+//                onLocationChanged(location);
+//            else
+//                Toast.makeText(getBaseContext(), "Location not Found.", Toast.LENGTH_SHORT).show();
         }
 
     } // end of implement GPS
@@ -240,11 +187,11 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
     public void onLocationChanged(Location location) {
 
 
-        TextView longitude = (TextView) findViewById(R.id.longView);
-        TextView latitude = (TextView) findViewById(R.id.latView);
+//        TextView longitude = (TextView) findViewById(R.id.longView);
+//        TextView latitude = (TextView) findViewById(R.id.latView);
 
-        longitude.setText("Current Longitude:\n" + location.getLongitude());
-        latitude.setText("Current Latitude:" + location.getLatitude());
+//        longitude.setText("Current Longitude:\n" + location.getLongitude());
+//        latitude.setText("Current Latitude:" + location.getLatitude());
 
         //  String sfd = longitude.toString();  // this ts to convert. .
 
