@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 //import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
@@ -61,7 +62,6 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
 
 
 
-
     public fragMain() {
         // Required empty public constructor
     }
@@ -70,13 +70,23 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        chckPermission();
+
+        myLocationSOS();
+
+
+
         MessageBox(((MainActivity) getActivity()).ListAllCNums());    //debugging MsgBox
         //
-        chckPermission();
+
+
+
 // ======== WORKING
 
 
         View rootView = inflater.inflate(R.layout.fragment_frag_main, container, false);
+
         final View rootViewSettings = inflater.inflate(R.layout.fragment_frag_settings, container, false);
 
         //============================ DONT DELETE ============================
@@ -99,11 +109,71 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
 
 
 
-
-
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                // count how many text has been sent and after 2 sent. After 2 message sent, no
+                // longer need button.
+                if (count < MAX_NUMBER__SMS_SENT) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        // increaseSize();
+
+                        //postCenterToast("***** HOLDING BUTTON ****** .");
+
+                    } else {
+
+                 //       postCenterToast("S.O.S SENT!!!");
+
+                        try {
+                            //*****    NOTE:  THIS IS TO SEND SMS, future tech    **************
+
+                            //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
+
+                            smsMgrTwo = SmsManager.getDefault();
+
+
+                            //   }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
+
+                                // http://maps.google.com/maps?q=24.197611,120.780512 show PIC DROP
+
+                                // adding all coordinates and message to be sent as dataOfCoordNameConvertor
+
+                                String testMsg = "help test";
+
+                                dataOfCoordNameConvertor =  testMsg + "  " + "http://www.google.com/maps?q="+dataOfCoordNameConvertor;
+
+                                String number = "5554";
+                                smsMgrTwo.sendTextMessage(number, null, dataOfCoordNameConvertor, null, null);
+
+
+                                count++;  // count how many sms sent. . MAX 1
+                                //    if (count == MAX_NUMBER__SMS_SENT) {
+
+//                                final Handler handler = new Handler();
+//                                handler.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        //Do something after after 3000 seconds
+//                                        //  btnSOS.setEnabled(false);  // disabled button
+//                                    }
+//                                }, 3000);  // 2 seconds
+
+                         //       postCenterToast("Button Disabled.");
+
+                                //     }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }// end 1st if statement ---> counting message sent
+
+
+                else {
+           //         postCenterToast("You have already sent TWO MESSAGES.");
+                }
 
 
 
@@ -172,10 +242,10 @@ public class fragMain extends android.support.v4.app.Fragment implements Locatio
             longCoor = location.getLongitude();
             lattCoor = location.getLatitude();
 
-//            if (location != null)
-//                onLocationChanged(location);
-//            else
-//                Toast.makeText(getBaseContext(), "Location not Found.", Toast.LENGTH_SHORT).show();
+            if (location != null)
+                onLocationChanged(location);
+            else
+               Toast.makeText(getActivity(), "Location not Found.", Toast.LENGTH_SHORT).show();
         }
 
     } // end of implement GPS
