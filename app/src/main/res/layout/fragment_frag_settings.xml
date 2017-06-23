@@ -17,15 +17,15 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
+            android:hint="Name"
             android:inputType="textPersonName"
-            android:text="Name"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/buttonSave_Contact"
-            tools:layout_constraintTop_creator="1"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp" />
+            tools:layout_constraintTop_creator="1" />
 
         <Button
             android:id="@+id/buttonSave_Contact"
@@ -46,8 +46,8 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:ems="10"
+            android:hint="Phone Number"
             android:inputType="textPersonName|phone"
-            android:text="Phone Number"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/buttonSave_Contact"

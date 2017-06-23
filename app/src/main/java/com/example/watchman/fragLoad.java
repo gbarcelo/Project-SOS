@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class fragLoad extends Fragment {
+public class fragLoad extends android.support.v4.app.Fragment {
 
 
     public fragLoad() {
