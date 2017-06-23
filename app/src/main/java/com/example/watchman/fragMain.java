@@ -3,24 +3,32 @@ package com.example.watchman;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Fragment;
+//import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.example.watchman.R.id.buttonMain;
+import static com.example.watchman.R.id.textView_Saved_Name1;
+import static com.example.watchman.R.id.textView_Saved_Num1;
 
-public class fragMain extends android.support.v4.app.Fragment {
+public class fragMain extends android.support.v4.app.Fragment implements LocationListener {
 
     final int MAX_NUMBER__SMS_SENT = 2;
 
@@ -52,23 +60,53 @@ public class fragMain extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
+        MessageBox(((MainActivity) getActivity()).ListAllCNums());    //debugging MsgBox
         //
         chckPermission();
-
+// ======== WORKING
 
         View rootView = inflater.inflate(R.layout.fragment_frag_main, container, false);
-        Button mainb = rootView.findViewById(buttonMain);
+        final View rootViewSettings = inflater.inflate(R.layout.fragment_frag_settings, container, false);
 
-        mainb.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                MessageBox("Hello World"); //nothing function
+        //============================ DONT DELETE ============================
+        // this button is the medical button
+        button = (Button) rootView.findViewById(R.id.buttonMain);    // button
+
+        // sndBtn Save button
+        // dsblButton  // need save button
+
+//        final Button disable = (Button) findViewById(R.id.dsblButton);       // dslbButton
+
+
+//        // Reset when SOS after it has been disabled.
+//        disable.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                count = 0;
+//            }
+//        });
+
+
+
+
+
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+
+
+
+
+
+
+                return false;
             }
         });
+
         return rootView;
     }
+
 
     public void MessageBox(String message)
     {
@@ -96,6 +134,92 @@ public class fragMain extends android.support.v4.app.Fragment {
             // postCenterToast("Permission to send SMS");.
         }
     }
+
+
+
+
+//=============== GPS ============================
+
+    //  1 of 2:implement GPS
+    public void myLocationSOS() {
+
+        locationManager = (LocationManager) getChildFragmentManager().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        mapProvider = locationManager.getBestProvider(criteria, false);
+
+        if (mapProvider != null && !mapProvider.equals("")) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            Location location = locationManager.getLastKnownLocation(mapProvider);
+            locationManager.requestLocationUpdates(mapProvider, 15000, 1, this);
+
+            // convert decimal to string format
+            dataOfCoordNameConvertor = locationDecToString(location);
+
+            //creating location in string to pass
+            longCoor = location.getLongitude();
+            lattCoor = location.getLatitude();
+
+            if (location != null)
+                onLocationChanged(location);
+            else
+                Toast.makeText(getBaseContext(), "Location not Found.", Toast.LENGTH_SHORT).show();
+        }
+
+    } // end of implement GPS
+
+
+
+    // 2 of 2 implement GPS
+    @Override
+    public void onLocationChanged(Location location) {
+
+
+        TextView longitude = (TextView) findViewById(R.id.longView);
+        TextView latitude = (TextView) findViewById(R.id.latView);
+
+        longitude.setText("Current Longitude:\n" + location.getLongitude());
+        latitude.setText("Current Latitude:" + location.getLatitude());
+
+        //  String sfd = longitude.toString();  // this ts to convert. .
+
+
+
+        // send location to MSN
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
+
+
+    // Converts to GPS decimal to string format and returns a string
+    public static String locationDecToString(final Location location) {
+        return Location.convert(location.getLatitude(), Location.FORMAT_DEGREES) +
+                "," + Location.convert(location.getLongitude(), Location.FORMAT_DEGREES);
+    }
+
+
+
+
+
+
+
 
 
 
