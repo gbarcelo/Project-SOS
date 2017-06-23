@@ -3,13 +3,22 @@ package com.example.watchman;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+//import android.app.Fragment;
+//import android.app.FragmentManager;
+//import android.app.FragmentTransaction;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,20 +35,20 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_tracking:
                     fragment = new fragMain();
-                    fm = getFragmentManager();
+                    fm = getSupportFragmentManager();
                     ft = fm.beginTransaction();
                     ft.replace(R.id.fragment_place, fragment);
                     ft.commit();
                     return true;
                 case R.id.navigation_lastroute:
                     fragment = new fragLastRoute();
-                    fm = getFragmentManager();
+                    fm = getSupportFragmentManager();
                     ft = fm.beginTransaction();
                     ft.replace(R.id.fragment_place, fragment);
                     ft.commit();                    return true;
                 case R.id.navigation_settings:
                     fragment = new fragSettings();
-                    fm = getFragmentManager();
+                    fm = getSupportFragmentManager();
                     ft = fm.beginTransaction();
                     ft.replace(R.id.fragment_place, fragment);
                     ft.commit();
@@ -56,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fragment = new fragMain();
-        fm = getFragmentManager();
+        fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
         ft.replace(R.id.fragment_place, fragment);
         ft.commit();

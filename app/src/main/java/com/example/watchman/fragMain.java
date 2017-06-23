@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import static com.example.watchman.R.id.buttonMain;
 
-public class fragMain extends Fragment {
+public class fragMain extends android.support.v4.app.Fragment {
 
     public fragMain() {
         // Required empty public constructor

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class fragSettings extends Fragment {
+public class fragSettings extends android.support.v4.app.Fragment {
 
 
     public fragSettings() {
